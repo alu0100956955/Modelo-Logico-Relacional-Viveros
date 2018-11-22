@@ -3,9 +3,9 @@
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+--SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+--SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+--SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
 -- Schema mydb
@@ -14,85 +14,77 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema mydb
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+--CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+--USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS mydb;
+
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Vivero`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Vivero` (
-  `Cord` POINT NOT NULL,
-  `localidad` VARCHAR(45) NULL,
-  `Nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`Cord`))
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS mydb.Vivero (
+  Cord INT NOT NULL,
+  localidad VARCHAR(45) NULL,
+  Nombre VARCHAR(45) NOT NULL,
+  PRIMARY KEY (Cord));
 
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Zona`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Zona` (
-  `Cord` POINT NOT NULL,
-  `nombre` VARCHAR(45) NOT NULL,
-  `producto` VARCHAR(45) NULL,
-  PRIMARY KEY (`Cord`, `nombre`),
-  CONSTRAINT `Cod`
-    FOREIGN KEY (`Cord`)
-    REFERENCES `mydb`.`Vivero` (`Cord`)
+CREATE TABLE IF NOT EXISTS mydb.Zona (
+  Cord INT NOT NULL,
+  nombre VARCHAR(45) NOT NULL,
+  producto VARCHAR(45) NULL,
+  PRIMARY KEY (Cord, nombre),
+  CONSTRAINT Cod 
+    FOREIGN KEY (Cord)
+    REFERENCES mydb.Vivero (Cord)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Empleado`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Empleado` (
-  `DNI` INT NOT NULL,
-  `fecha_in` DATE NOT NULL,
-  `sueldo` INT NULL,
-  `css` VARCHAR(45) NULL,
-  `producto` VARCHAR(45) NULL,
-  `Cord` POINT NULL,
-  `nombre` VARCHAR(45) NULL,
-  `fecha_fin` DATE NULL,
-  `ventas` VARCHAR(45) NULL,
-  PRIMARY KEY (`DNI`, `fecha_in`),
-  INDEX `Cod_idx` (`Cord` ASC),
-  INDEX `nombre_idx` (`nombre` ASC),
-  CONSTRAINT `Cod`
-    FOREIGN KEY (`Cord`)
-    REFERENCES `mydb`.`Zona` (`Cord`)
+CREATE TABLE IF NOT EXISTS mydb.Empleado (
+  DNI INT NOT NULL,
+  fecha_in DATE NOT NULL,
+  sueldo INT NULL,
+  css VARCHAR(45) NULL,
+  producto VARCHAR(45) NULL,
+  Cord INT NULL,
+  nombre VARCHAR(45) NULL,
+  fecha_fin DATE NULL,
+  ventas VARCHAR(45) NULL,
+  PRIMARY KEY (DNI, fecha_in),
+  CONSTRAINT Cod
+    FOREIGN KEY (Cord,nombre)
+    REFERENCES mydb.Zona (Cord,nombre)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `nombre`
-    FOREIGN KEY (`nombre`)
-    REFERENCES `mydb`.`Zona` (`nombre`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
+    ON UPDATE NO ACTION);
+-- los indexs hay que crearlos por fuera
+CREATE INDEX cord_idx ON mydb.Empleado (cord ASC);
+CREATE INDEX nombre_idx ON mydb.Empleado (nombre ASC);
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Cliente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
-  `DNI` INT NOT NULL,
-  `Bonificacion` VARCHAR(45) NULL,
-  `total_ventas` VARCHAR(45) NULL,
-  PRIMARY KEY (`DNI`))
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS mydb.Cliente (
+  DNI INT NOT NULL,
+  Bonificacion VARCHAR(45) NULL,
+  total_ventas VARCHAR(45) NULL,
+  PRIMARY KEY (DNI));
 
 
 -- -----------------------------------------------------
 -- Table `mydb`.`Producto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Producto` (
-  `Cod` INT NOT NULL,
-  `stack` VARCHAR(45) NULL,
-  `precio` INT NULL,
-  PRIMARY KEY (`Cod`))
-ENGINE = InnoDB;
+CREATE TABLE IF NOT EXISTS mydb.Producto (
+  Cod INT NOT NULL,
+  stack VARCHAR(45) NULL,
+  precio INT NULL,
+  PRIMARY KEY (Cod));
 
 
 -- -----------------------------------------------------
@@ -123,6 +115,35 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Producto_Empleado_Cliente` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+-- en este de abajo faltan las indexs y no funciona
+CREATE TABLE IF NOT EXISTS mydb.Producto_Empleado_Cliente (
+  DNI_e INT NOT NULL,
+  DNI_C INT NOT NULL,
+  Cod_p INT NOT NULL,
+  Cant INT NULL,
+  fecha DATE NULL,
+  PRIMARY KEY (DNI_e, DNI_C, Cod_p),
+  CONSTRAINT DNI_e                
+    FOREIGN KEY (DNI_e)          
+    REFERENCES mydb.Empleado (DNI)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT DNI_C
+    FOREIGN KEY (DNI_C)
+    REFERENCES mydb.Cliente (DNI)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT Cod_p
+    FOREIGN KEY (DNI_e,DNI_C,Cod_p)
+    REFERENCES mydb.Producto (Cod)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+CREATE INDEX DNI_c_idx ON mydb.Producto_Empleado_Cliente (DNI_C ASC);
+CREATE INDEX Cod_p_idx ON mydb.Producto_Empleado_Cliente (Cod_p ASC);
+
+
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
