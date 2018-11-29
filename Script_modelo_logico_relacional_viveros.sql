@@ -90,43 +90,17 @@ CREATE TABLE IF NOT EXISTS mydb.Producto (
 -- -----------------------------------------------------
 -- Table `mydb`.`Producto_Empleado_Cliente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Producto_Empleado_Cliente` (
-  `DNI_e` INT NOT NULL,
-  `DNI_C` INT NOT NULL,
-  `Cod_p` INT NOT NULL,
-  `Cant` INT NULL,
-  `fecha` DATE NULL,
-  PRIMARY KEY (`DNI_e`, `DNI_C`, `Cod_p`),
-  INDEX `DNI_C_idx` (`DNI_C` ASC),
-  INDEX `Cod_p_idx` (`Cod_p` ASC),
-  CONSTRAINT `DNI_e`
-    FOREIGN KEY (`DNI_e`)
-    REFERENCES `mydb`.`Empleado` (`DNI`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `DNI_C`
-    FOREIGN KEY (`DNI_C`)
-    REFERENCES `mydb`.`Cliente` (`DNI`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `Cod_p`
-    FOREIGN KEY (`Cod_p`)
-    REFERENCES `mydb`.`Producto` (`Cod`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
--- en este de abajo faltan las indexs y no funciona
 CREATE TABLE IF NOT EXISTS mydb.Producto_Empleado_Cliente (
   DNI_e INT NOT NULL,
+	fecha_in DATE NOT NULL,
   DNI_C INT NOT NULL,
   Cod_p INT NOT NULL,
   Cant INT NULL,
   fecha DATE NULL,
-  PRIMARY KEY (DNI_e, DNI_C, Cod_p),
+  PRIMARY KEY (DNI_e,fecha_in, DNI_C, Cod_p),
   CONSTRAINT DNI_e                
-    FOREIGN KEY (DNI_e)          
-    REFERENCES mydb.Empleado (DNI)
+    FOREIGN KEY (DNI_e,fecha_in)          
+    REFERENCES mydb.Empleado (DNI,fecha_in)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT DNI_C
@@ -135,7 +109,7 @@ CREATE TABLE IF NOT EXISTS mydb.Producto_Empleado_Cliente (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT Cod_p
-    FOREIGN KEY (DNI_e,DNI_C,Cod_p)
+    FOREIGN KEY (Cod_p)
     REFERENCES mydb.Producto (Cod)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
@@ -146,18 +120,18 @@ CREATE INDEX Cod_p_idx ON mydb.Producto_Empleado_Cliente (Cod_p ASC);
 
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+--SET SQL_MODE=@OLD_SQL_MODE;
+--SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+--SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
 -- Data for table `mydb`.`Vivero`
 -- -----------------------------------------------------
-START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Vivero` (`Cord`, `localidad`, `Nombre`) VALUES (125.152, 'la laguna', 'Laguna');
-INSERT INTO `mydb`.`Vivero` (`Cord`, `localidad`, `Nombre`) VALUES (223.625, 'Santa Cruz', 'Santa_cruz');
-INSERT INTO `mydb`.`Vivero` (`Cord`, `localidad`, `Nombre`) VALUES (362.859, 'Candelaria', 'Candelaria');
+--START TRANSACTION;
+--USE `mydb`;
+INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (125.152, 'La Laguna', 'Laguna');
+INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (223.625, Santa Cruz, Santa_cruz);
+INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (362.859, Candelaria, Candelaria);
 
 COMMIT;
 
