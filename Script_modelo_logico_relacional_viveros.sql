@@ -127,11 +127,12 @@ CREATE INDEX Cod_p_idx ON mydb.Producto_Empleado_Cliente (Cod_p ASC);
 -- -----------------------------------------------------
 -- Data for table `mydb`.`Vivero`
 -- -----------------------------------------------------
---START TRANSACTION;
+START TRANSACTION;
 --USE `mydb`;
 INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (125.152, 'La Laguna', 'Laguna');
-INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (223.625, Santa Cruz, Santa_cruz);
-INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (362.859, Candelaria, Candelaria);
+INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (223.625, 'Santa Cruz', 'Santa_cruz');
+INSERT INTO mydb.Vivero (Cord, localidad, Nombre) VALUES (362.859, 'Candelaria', 'Candelaria');
+
 
 COMMIT;
 
@@ -140,12 +141,12 @@ COMMIT;
 -- Data for table `mydb`.`Zona`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Zona` (`Cord`, `nombre`, `producto`) VALUES (125.152, 'zona 1', 'platanos');
-INSERT INTO `mydb`.`Zona` (`Cord`, `nombre`, `producto`) VALUES (125.152, 'zona 2', 'mandarinas');
-INSERT INTO `mydb`.`Zona` (`Cord`, `nombre`, `producto`) VALUES (223.625, 'almacen', NULL);
-INSERT INTO `mydb`.`Zona` (`Cord`, `nombre`, `producto`) VALUES (362.859, 'zona 3', 'rosas');
-INSERT INTO `mydb`.`Zona` (`Cord`, `nombre`, `producto`) VALUES (362.859, 'zona 4', 'geranios');
+--USE `mydb`;
+INSERT INTO mydb.Zona (Cord, nombre, producto) VALUES (125.152, 'zona 1', 'platanos');
+INSERT INTO mydb.Zona (Cord, nombre, producto) VALUES (125.152, 'zona 2', 'mandarinas');
+INSERT INTO mydb.Zona (Cord, nombre, producto) VALUES (223.625, 'almacen', NULL);
+INSERT INTO mydb.Zona (Cord, nombre, producto) VALUES (362.859, 'zona 3', 'rosas');
+INSERT INTO mydb.Zona (Cord, nombre, producto) VALUES (362.859, 'zona 4', 'geranios');
 
 COMMIT;
 
@@ -154,8 +155,8 @@ COMMIT;
 -- Data for table `mydb`.`Empleado`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Empleado` (`DNI`, `fecha_in`, `sueldo`, `css`, `producto`, `Cord`, `nombre`, `fecha_fin`, `ventas`) VALUES (1111, '10-02-17', 1117, NULL, 'platano', 125.152, 'zona 1', NULL, '5');
+--USE `mydb`;
+INSERT INTO mydb.Empleado (DNI, fecha_in, sueldo, css, producto, Cord, nombre, fecha_fin, ventas) VALUES (1111, '10-02-17', 1117, NULL, 'platano', 125.152, 'zona 1', NULL, '5');
 
 COMMIT;
 
@@ -164,8 +165,8 @@ COMMIT;
 -- Data for table `mydb`.`Cliente`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Cliente` (`DNI`, `Bonificacion`, `total_ventas`) VALUES (2222, '0', '0');
+--USE `mydb`;
+INSERT INTO mydb.Cliente (DNI, Bonificacion, total_ventas) VALUES (2222, '0', '0');
 
 COMMIT;
 
@@ -174,18 +175,19 @@ COMMIT;
 -- Data for table `mydb`.`Producto`
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Producto` (`Cod`, `stack`, `precio`) VALUES (1234, '12', 15);
+--USE `mydb`;
+INSERT INTO mydb.Producto (Cod, stack, precio) VALUES (1234, '12', 15);
 
 COMMIT;
 
 
 -- -----------------------------------------------------
 -- Data for table `mydb`.`Producto_Empleado_Cliente`
+-- esta modificado a mano este insertar debiado al cambio con las claves ajenas
 -- -----------------------------------------------------
 START TRANSACTION;
-USE `mydb`;
-INSERT INTO `mydb`.`Producto_Empleado_Cliente` (`DNI_e`, `DNI_C`, `Cod_p`, `Cant`, `fecha`) VALUES (1111, 2222, 1234, 0, '22-03-19');
+--USE `mydb`;
+INSERT INTO mydb.Producto_Empleado_Cliente (DNI_e, fecha_in, DNI_C, Cod_p, Cant, fecha) VALUES (1111, '10-02-17', 2222, 1234, 0, '22-03-19');
 
 COMMIT;
 
