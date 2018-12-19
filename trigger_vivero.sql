@@ -2,26 +2,27 @@
 -- Primero voy a cambiar el tipo de dato de bonificacion 
 -- de varchar a int
 
-ALTER TABLE mydb.cliente ALTER COLUMN bonificacion TYPE INT;
+ALTER TABLE mydb.cliente ALTER COLUMN bonificacion TYPE INT
+USING bonificacion::integer;
 
 
 -- Trigger
 CREATE FUNCTION boni() RETURNS trigger AS $boni$
 	BEGIN
 		IF NEW.total_ventas > 10 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 10
+			UPDATE mydb.Cliente SET NEW.bonificacion = 10;
 		END IF;
 
 		IF NEW.total_ventas > 15 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 15	
+			UPDATE mydb.Cliente SET NEW.bonificacion = 15;	
 		END IF;
 
 		IF NEW.total_ventas > 20 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 20
+			UPDATE mydb.Cliente SET NEW.bonificacion = 20;
 		END IF;
 
 		IF NEW.total_ventas > 30 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 25
+			UPDATE mydb.Cliente SET NEW.bonificacion = 25;
 		END IF;
 	END;
 $boni$ LANGUAGE plpgsql;
