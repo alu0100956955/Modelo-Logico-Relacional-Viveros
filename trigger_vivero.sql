@@ -13,20 +13,22 @@ USING total_ventas::integer;
 CREATE FUNCTION boni() RETURNS trigger AS $boni$
 	BEGIN
 		IF NEW.total_ventas > 10 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 10;
+			UPDATE mydb.Cliente SET bonificacion = 10;
+			RETURN NULL;
 		END IF;
 
 		IF NEW.total_ventas > 15 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 15;	
+			UPDATE mydb.Cliente SET bonificacion = 15;	
 		END IF;
 
 		IF NEW.total_ventas > 20 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 20;
+			UPDATE mydb.Cliente SET bonificacion = 20;
 		END IF;
 
 		IF NEW.total_ventas > 30 THEN
-			UPDATE mydb.Cliente SET NEW.bonificacion = 25;
+			UPDATE mydb.Cliente SET bonificacion = 25;
 		END IF;
+		RETURN NEW;
 	END;
 $boni$ LANGUAGE plpgsql;
 
