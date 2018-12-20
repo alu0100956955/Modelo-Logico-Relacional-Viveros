@@ -1,9 +1,12 @@
 
--- Primero voy a cambiar el tipo de dato de bonificacion 
+-- Primero voy a cambiar el tipo de dato de bonificacion y total_ventas
 -- de varchar a int
 
 ALTER TABLE mydb.cliente ALTER COLUMN bonificacion TYPE INT
 USING bonificacion::integer;
+
+ALTER TABLE mydb.cliente ALTER COLUMN total_ventas TYPE INT
+USING total_ventas::integer;
 
 
 -- Trigger
